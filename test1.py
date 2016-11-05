@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import render_template
-from flask_bootstrap3 import Bootstrap
+from flask_bootstrap import Bootstrap
 from flask_script import Manager
 from flask.ext.moment import Moment
 
