@@ -67,6 +67,7 @@ class User(db.Model):
     username = db.Column(db.String(64), unique=True, index=True)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
+
 class NameForm(FlaskForm):
     name = StringField('what is your name?', validators=[Required()])
     submit = SubmitField('Submit')
