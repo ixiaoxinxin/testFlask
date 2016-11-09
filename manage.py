@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import os
 from app import create_app, db
 from app.models import User, Role
@@ -19,4 +20,4 @@ def test():
     test = unittest.TestLoader.discover('test')
     unittest.TextTestRunner(verbosity=2).run(test)
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
