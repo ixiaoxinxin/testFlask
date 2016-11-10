@@ -20,4 +20,4 @@ def test():
     test = unittest.TestLoader.discover('test')
     unittest.TextTestRunner(verbosity=2).run(test)
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
