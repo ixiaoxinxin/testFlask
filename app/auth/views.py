@@ -1,13 +1,12 @@
 from flask import render_template, redirect, request, url_for, flash
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, \
+    current_user
 from . import auth
+from .. import db
 from ..models import User
+from ..email import send_email
 from .forms import LoginForm, RegistrationForm, ChangePasswordForm,\
     PasswordResetRequestForm, PasswordResetForm, ChangeEmailForm
-from .. import db
-from ..email import send_email
-from flask_login import current_user
-
 
 
 @auth.before_app_request
@@ -42,7 +41,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    flash('you have been logged out')
+    flash('You have been logged out.')
     return redirect(url_for('main.index'))
 
 
@@ -56,8 +55,9 @@ def register():
         db.session.add(user)
         db.session.commit()
         token = user.generate_confirmation_token()
-        send_email(user.email, 'Confirm your account', 'auth/email/confirm', user=user, token=token)
-        flash('a confirmation email has been send to you by email.')
+        send_email(user.email, 'Confirm Your Account',
+                   'auth/email/confirm', user=user, token=token)
+        flash('A confirmation email has been sent to you by email.')
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', form=form)
 
@@ -68,22 +68,22 @@ def confirm(token):
     if current_user.confirmed:
         return redirect(url_for('main.index'))
     if current_user.confirm(token):
-        flash('you have confirmed your account.thx!')
+        flash('You have confirmed your account. Thanks!')
     else:
-        flash('the confirmation is invalid or has expired')
+        flash('The confirmation link is invalid or has expired.')
     return redirect(url_for('main.index'))
 
 
 @auth.route('/confirm')
 @login_required
-def resned_confirmation():
+def resend_confirmation():
     token = current_user.generate_confirmation_token()
-    send_email(current_user.email,'confirm your account',
+    send_email(current_user.email, 'Confirm Your Account',
                'auth/email/confirm', user=current_user, token=token)
-    flash('a new confirmation email haa been send to you by email')
-    redirect(url_for('main.index'))
+    flash('A new confirmation email has been sent to you by email.')
+    return redirect(url_for('main.index'))
 
-#---------------
+
 @auth.route('/change-password', methods=['GET', 'POST'])
 @login_required
 def change_password():
