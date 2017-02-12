@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-
 from flask_wtf import Form
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import Required, Length, Email, Regexp, EqualTo
 from wtforms import ValidationError
 from ..models import User
 
-
+#处理每个表单的输入信息，增加校验
 class LoginForm(Form):
     email = StringField('Email', validators=[Required(), Length(1, 64),
                                              Email()])
@@ -25,6 +26,7 @@ class RegistrationForm(Form):
     password2 = PasswordField('Confirm password', validators=[Required()])
     submit = SubmitField('Register')
 
+    #添加页面校验，从实体model中读取数据进行校验，并利用validationError弹出错误信息
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():
             raise ValidationError('Email already registered.')

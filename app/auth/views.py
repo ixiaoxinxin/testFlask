@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import render_template, redirect, request, url_for, flash
 from flask_login import login_user, logout_user, login_required, \
     current_user
@@ -8,7 +9,7 @@ from ..email import send_email
 from .forms import LoginForm, RegistrationForm, ChangePasswordForm,\
     PasswordResetRequestForm, PasswordResetForm, ChangeEmailForm
 
-
+#配置url，与前台代码交互，获得前台输入值保存到数据库
 @auth.before_app_request
 def before_request():
     if current_user.is_authenticated:
